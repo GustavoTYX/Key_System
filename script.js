@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
   async function getStoredKeyFromServer() {
     // Fetch key from server, or generate if not available
     // You can implement your own logic here
-    const response = await fetch("generate-key.php");
+    const response = await fetch("https://github.com/GustavoTYX/Key_System/blob/main/generate-key.php");
     const storedKey = await response.text();
     return storedKey;
   }
