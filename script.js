@@ -11,16 +11,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function getStoredKeyFromServer() {
-    // Replace this with your actual API URL that serves the stored key
-    const apiUrl = "https://github.com/GustavoTYX/Key_System/blob/main/store-key.php";
-
-    try {
-      const response = await fetch(apiUrl);
-      const storedKey = await response.text();
-      return storedKey;
-    } catch (error) {
-      console.error("Error fetching stored key:", error);
-      return "-";
-    }
+    const response = await fetch("store-key.php");
+    const storedKey = await response.text();
+    return storedKey;
   }
 });
