@@ -1,28 +1,27 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $ip = $_SERVER['REMOTE_ADDR'];
 
-    // Check if a key was submitted via POST
-    if (isset($_POST['key'])) {
-        $key = $_POST['key'];
+    // Retrieve the stored key for the IP
+    $storedKey = getStoredKeyForIP($ip);
 
-        // Store the key in a file, database, or other storage mechanism
-        // For this example, we'll store it in a text file
-        storeKeyForIP($ip, $key);
-
-        echo "Key stored successfully.";
+    if ($storedKey) {
+        echo $storedKey;
     } else {
-        echo "Key not provided.";
+        echo "No key stored for this IP.";
     }
 } else {
     echo "Invalid request method.";
 }
 
-function storeKeyForIP($ip, $key) {
-    // Replace this with your actual logic to store the key
-    // For demonstration purposes, we'll store it in a text file
-    $storageFile = 'stored_keys.txt';
-    $data = "$ip|$key\n";
-    file_put_contents($storageFile, $data, FILE_APPEND);
+function getStoredKeyForIP($ip) {
+    // Replace this with your actual logic to retrieve the stored key
+    $storedKeys = json_decode(file_get_contents('stored_keys.txt'), true);
+
+    if (isset($storedKeys[$ip])) {
+        return $storedKeys[$ip];
+    } else {
+        return null;
+    }
 }
 ?>
