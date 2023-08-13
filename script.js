@@ -1,42 +1,45 @@
 document.addEventListener("DOMContentLoaded", function () {
   const generateButton = document.getElementById("generateButton");
   const generatedKeyElement = document.getElementById("generatedKey");
+  const timerElement = document.getElementById("timer");
 
-  generateButton.addEventListener("click", generateAndSendKey);
+  generateButton.addEventListener("click", generateAndDisplayKey);
 
-  async function generateAndSendKey() {
+  async function generateAndDisplayKey() {
     const storedKey = await getStoredKeyFromServer();
     generatedKeyElement.textContent = storedKey;
     generateButton.disabled = true;
-
-    // Send the key to another site using a POST request
-    await sendKeyToAnotherSite(storedKey);
+    startTimer(24 * 60 * 60); // 24 hours in seconds
   }
 
   async function getStoredKeyFromServer() {
-    const response = await fetch("store-key.php");
+    // Fetch key from server, or generate if not available
+    // You can implement your own logic here
+    const response = await fetch("generate-key.php");
     const storedKey = await response.text();
     return storedKey;
   }
 
-  async function sendKeyToAnotherSite(key) {
-    const otherSiteUrl = "https://gustavotyx.github.io/Key-Receiver/";
-    const data = new URLSearchParams();
-    data.append("key", key);
+  function startTimer(seconds) {
+    let remainingTime = seconds;
+    updateTimerDisplay(remainingTime);
 
-    try {
-      const response = await fetch(otherSiteUrl, {
-        method: "POST",
-        body: data,
-      });
+    const timerInterval = setInterval(() => {
+      remainingTime--;
 
-      if (response.ok) {
-        console.log("Key sent to the other site successfully.");
-      } else {
-        console.error("Failed to send the key to the other site.");
+      if (remainingTime <= 0) {
+        clearInterval(timerInterval);
+        generateButton.disabled = false;
       }
-    } catch (error) {
-      console.error("Error sending the key:", error);
-    }
+
+      updateTimerDisplay(remainingTime);
+    }, 1000);
+  }
+
+  function updateTimerDisplay(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${(seconds % 60).toString().padStart(2, '0')}`;
+    timerElement.textContent = `Time remaining: ${formattedTime}`;
   }
 });
