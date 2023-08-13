@@ -31,7 +31,7 @@ function getStoredKeyForIP($ip) {
 function storeKeyForIP($ip, $key) {
     // Replace this with your actual logic to store the key
     // For demonstration purposes, we'll store it in a text file
-    $storageFile = 'stored_keys.txt';
+    $storageFile = 'https://github.com/GustavoTYX/Key_System/blob/main/stored_keys.txt';
     $data = "$ip|$key\n";
     file_put_contents($storageFile, $data, FILE_APPEND);
 }
